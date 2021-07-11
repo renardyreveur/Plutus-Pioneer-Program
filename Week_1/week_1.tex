@@ -1,0 +1,201 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[left=1in, right=1in, bottom=1.1in, top=1.0in]{geometry}
+\usepackage{hyperref}
+\usepackage{soul}
+\usepackage{multicol}
+
+\title{Plutus Pioneer Program \\ \large Second Cohort, Week 1}
+\date{2nd July, 2021}
+\author{Jeehoon Kang \textbf{[GEST]}}
+
+\begin{document}
+    \maketitle
+
+    \section{Background Knowledge}
+
+    \paragraph{} From the Plutus Documentation, the Plutus Platform is defined as the following: 
+
+    \begin{quotation}
+        ``The Plutus Platform is a \underline{platform} for writing \textbf{applications} that interact with a \textbf{distributed ledger} featuring \textbf{scripting capabilities}"
+    \end{quotation}
+
+    \paragraph{}As Plutus Pioneers, we are one of the first people on Earth that will be using that platform, developing smashing `applications' that will run on our favorite distributed ledger called the `Cardano Blockchain'. Cool! Right?
+    
+    \paragraph{} While that's all rainbows and marshmallows, let's first think about what that all means. Focussing on the boldfaced words in the definition above, we can explore this space in depth.
+
+    \begin{description}
+        \item[Applications] - they're cool, they're the things you install on your phone right? Somewhat correct! An application is an useful piece of opinionated and purposeful software that connects \underline{the user and the core logic/structures of a digital system}.
+        
+        In our case, we(plutus application developers) are creating a piece of code that will allow users(Cardano end-users) to interact with the Cardano blockchain(the ledger), such that much more interesting actions (than just simple asset/token transfers) happen on that blockchain. We're creating that missing link between human and blockchain!
+        
+        Now that may sound like a impressive superpower, but as we all know: "With great power comes great responsibility". The developers of such applications are responsible for taking into consideration all the peripherals from user experience to synchronisation issues. Especially, when valuable assets are at stake, that responsibility is magnified. This is where the platform steps in. The Plutus Platform attempts to provide a safe and expressive space for developers to manage all that. The last piece is on us, we still need to be on edge, constantly studying and testing out our future world-changing services.
+
+        \item[Distributed Ledger] - ``Alright, alright I promise to build safe software, for the good of all of us, and to always be responsible. So what services can we actually make? What is a ledger?" Knew you would ask that! Historically, ledgers originate from late medival churches having a \textbf{book}(typically scripture) that lies \textbf{permanently} in a \textbf{open and shared} area. The main idea still carries on to the modern definition of ledgers, where we record `transactions'(typically of the transfers of valuable assets) between multiple parties, and everybody involved can verify and check the recordings. 
+        
+        \paragraph{}The purpose of this so called book-keeping is \textbf{consensus}. Such that no rogue statements such as `no I didn't', `when did we ever agree on that?', or `Come on! You told me so!' arises. All the parties involved with a ledger agrees that what is written on the ledger is the unrefutable truth between them. (And thus to add a bit more faith to it, when recording a `transaction', it is typically `signed' by all the parties being involved in that transaction.) This type of `who did what when to whom' type of history-keeping naturally emanates widespread usage in various different fields. 
+        
+        \begin{itemize}
+            \item Simple book-keeping such as tracking money transfers, organising academic records, verifying immunisation records, product version management etc 
+            \item Extended applications such as on/offline social networking, game state tracking, advertising host-client matching, copyright and ownership checking, shared computing cluster management, voting and on-and-on.
+        \end{itemize}
+
+        \paragraph{}Up until this point, we've only discussed what a ledger is, but lets dig deeper and see what the Cardano Blockchain[our favorite ledger ;)] is all about. 
+
+        \paragraph{}The Cardano Blockchain is a digital \textbf{distributed} ledger. Here the word distributed implies \textbf{`replicated, shared, and synchronised'}. This makes reaching consensus a bit harder than a central organisation (like the church on the historical example above) managing the entire ledger, but if such consensus can be achieved, \textbf{trustlessness} comes to town, and this can provide numerous (hopefully) positive socioeconomic effects. The Cardano blockchain manages that consensus with a philosophy called `Proof of Stake', which at its simplest means `temporarily transferring power (to write on the ledger) over to the party that has the most to lose if things go wrong on the ledger', but there are layers and layers into this, and also numerous other consensus algorithms, so I beg the reader to read more about it! Here's a \href{https://cardano.org/ouroboros/}{link} to the Cardano website describing the Ouroboros protocol.
+
+        \paragraph{}By now I hope that we're all on the same page (Ha! consensus!), and that we're all filled with exciting ideas that applies `distributed ledgers' to crucial human problems, needs, and wants! 
+        
+
+        \item[Scripting Capabilities] - This naturally leads on to the main part of the Plutus platform: Scripting Capabilities! Before we delve into this topic, lets think about some typical ways a distributed ledger is composed of.
+        
+        \begin{description}
+            \item[Account based] - This is pretty self-explanatory. The ledger records a \textbf{list of accounts} of all the players involved, and the \textbf{balance per account}. Transactions require the global state of the accounts and their balances and outputs an increase/decrease of balance for the accounts involved. This is how the current Ethereum blockchain is run. It helps with the expressiveness and programmability of the system, but shared mutual states creates side effects, and its going to be hard for the developer to manage everything, especially the unexpected or unwanted side-effects.
+            \item[UTxO based] - UTxO stands for `Unspent Transaction Outputs'. Here the unit of transaction isn't the balance of accounts. It's the UTxOs which can be thought of as a \textbf{cake with a nametag}. The nametag simply represents who's cake it is (and one person can have many cakes too! mmm!), and the cake itself is some money/token. \ul{It is important, that the cake is the unit of transaction, and we do not cut the cake into pieces and give a piece to the transaction. The transaction cuts/merges/or-whatever-it-wants-to-with the cake to create new cakes.} A transaction in this sense, takes in a cake (or several cakes), and slices the pieces inside of it according to the transaction data, and re-assigns the pieces either within the cake, or to a different cake(s) and assigns new nametags to the produced cakes. As such its not the balance of accounts that are being updated, but just the size and nametag of the cakes. Cake(s) goes in(is spent) and new (unspent) Cake(s) come out. \ul{This means that the transaction only has to deal with the input cake(s) instead of the global state of accounts and balances} (Hmm?! I smell functional, I smell no side-effects, I smell HASKELL!!). At their simplest, Bitcoin and Cardano uses this UTxO model as their base ledger system.
+        \end{description}
+        
+        \paragraph{} Now Cardano here extends the UTxO model into something called an Extended Unspent Transaction Output model (EUTxO). It is this `Extension' that provides the `scripting capabilities' to the Cardano blockchain. \textbf{The scripts are there to define and construct the complex transactions and provide `validation' upon conditions on the consumption of UTxOs by those transactions.} 
+        
+        By adding this additional capability, we are able to deploy so called \textbf{`smart contracts'}, that adds interesting logics such as `if', `while', and so on to the ```who did what when to whom' type of history-keeping" that was discussed previously. Isn't that awesome?! There's got to be so much more we could do with that!!
+
+        This awesomeness is what we'll be working on as Plutus Pioneers. What type of interesting logics can we develop using that EUTxO model?! How do we do so?! 
+    \end{description}
+    
+
+
+    %  MAIN NOTES ON WEEK 1
+    \vspace{20px}
+    \section{Week 1 - The EUTxO model and an English Auction}
+
+    \paragraph{} The week 1 lecture on the Plutus Pioneer Program (Second Cohort) kicks off by explaining more about the `scripting capabilities' discussed in the section above.
+
+    \subsection{UTxOs}
+    \paragraph{} Unspent Transaction Outputs(UTxO) are defined as 
+
+    \begin{quotation}
+        ``Transaction \textbf{outputs from previous transactions} on the blockchain that have \textbf{not yet been spent}''
+    \end{quotation}
+
+    \paragraph{} Each transactions can take in an \ul{arbitrary number of inputs and produce an arbitrary number of outputs}. Here the input and outputs are the UTxOs(The cakes ;)), and they are consumed as a whole(You don't give a transaction a half-eaten/piece of a cake!). To check whether a transaction can spend a UTxO or not, digital signatures(of the input owners) are added to the transaction. 
+    
+    \paragraph{}So when you're trying to send someone 10 precious ADA, and you have one UTxO that says 100 ADA under your nametag, you don't split that UTxO into 2 UTxOs of 90 ADA and 10 ADA, and only give the 10 ADA UTxO to the transaction. You give the full UTxO that contains the 100 ADA under your name, and the transaction itself will produce two UTxOs, one with 90 ADA(as change) under your nametag, and another one with 10 ADA under the recipients nametag.
+
+    \paragraph{} Likewise if you have two UTxOs from two different transactions, one with 10 ADA and the other with 20 ADA, both with your nametag, and you need to spend 30 ADA, you don't merge it into 1 big UTxO of 30 ADA and give it to the transaction. You give two full UTxOs of 10 ADA and 20 ADA and the transaction will handle the main logic.
+
+    \paragraph{} That makes things clean and simple, and thus we can simply think that the sum of the inputs to a transaction is equal to the sum of the output of the transaction(The Conservation of Value!).  The transaction itself is then just a re-distribution of assets. (But wait! There are exceptions!)
+
+    \paragraph{} The two exceptions happen when we introduce: 
+    
+    \begin{enumerate}
+        \item Transaction Fees: When a transaction is written into a block and then added to the ledger(Cardano Blockchain), a small fee(depending on the complexity of the transaction) is required to incentivise the 'block-writing' of the network. This therefore means that, normally transaction inputs are slightly larger than its outputs.
+        \item Native Tokens: When minting(creating a token) or burning(putting it out of circulation) a token, the sum of input and outputs may be different. You either have more outputs(minting a token) or more inputs (burning a token)
+    \end{enumerate}
+
+    \subsection{(E)UTxOs}
+
+    \paragraph{} To borrow the expression, EUTxOs are UTxOs on steroids, and by steroids I mean `smart contracts'. Typically, the validation of the consumption of an UTxO relies on the digital signature checking of the UTxO that's being spent. To elaborate, the UTxO being used as input are attached with a function called a `validator' with the spender's public key address and the transaction input proves its eligibility with the `redeemer' which holds a hash made with the authorised spender's private key.  But with EUTxOs, on top of that digital signature, we are able to \textbf{add arbitrary logic} (compiled as plutus core). Instead of the validator and the redeemer holding addresses of public keys and hash, it contains addresses to \textbf{`Scripts'}, that contain arbitrary logic. It will be this  `script' that accesses the redeemer of the transaction input, and validate the associated UTxO as valid input or not. 
+
+    \subsection{Context of the Scripts}
+    We all know the Goldilocks story, and the same analogy can be shown in the context of the scripts in three major blockchains currently in use. Let's see whether our favorite blockchain Cardano is too hot, too cold, or just right!
+
+    \begin{itemize}
+        \item \textbf{Bitcoin} The Bitcoin blockchain also has (not-so) smart contracts written in Bitcoin Scripts. These scripts only have access to the redeemer of the input, and thus the script on the UTxO has very limited context.
+         
+        \item \textbf{Ethereum} The scripts on the Ethereum blockchain sees the whole shared state of the blockchain. This allows it to be very expressive, as it can incorporate various states and conditions of the blockchain. Yet, non-determinism(side-effects) and concurrency is an issue (which might lead on to security problems).
+        
+        During the time between a transaction being constructed and then being incorporated into the blockchain, a lot of stuff can happen concurrently. The context of the script is the whole blockchain state, and it won't be able to predict everything that happens before the blockchain state updates. Thus whether or not the transaction eventually fails or not, a gas fee(transaction fee) is always required(as you only get to know whether the transaction failed until a block is added to the blockchain). 
+
+        \item \textbf{Cardano} is in the `just right' zone between Bitcoin scripts and Ethereum scripts. It holds on to the semantic simplicity of the UTxO model, yet also doesn't give up on the expressiveness shown by Ethereum. This is possible with the following ideas. 
+        \begin{enumerate}
+            \item The context is at the transaction level(not the blockchain level), where the scripts have information, not limited to the spender's input, but all the inputs and outputs of the transaction. This limited scope helps with analysing the script, predicting what it will do, etc.
+            \item The context also includes a \textbf{`Datum'}, which is an arbitrary piece of data associated with the UTxO. This allows for historical context, and outside contexts that are present on the blockchain or elsewhere to be incorporated into the scripting. On top of the Redeemer, the Datum is added as a part of the validation.
+        \end{enumerate} 
+
+        Thus on Cardano, it is possible to check whether the transaction will validate or not before going on chain. If someone else has already consumed the output, the transaction that was going to spend it will fail before being processed into a block, and thus you won't need to pay transaction fees for failed transactions. I think we found our `just right' porridge!
+    \end{itemize}
+
+    Alright, so what's the recipe to make this `just right' porridge? Who is responsible for providing the Redeemer, Datum, and the Validator(Script)? The answer is the \ul{spending transaction}. 
+    
+    \paragraph{}Now some of the more pedantic readers here might have noticed, that in section 2.2, it is explained that the output is associated with a Script, and that the Redeemer is the one given by the spending transaction input. Conceptually, that is correct, as the validator is meant to be part of the output. However, the \ul{actual scripts and datum value are provided as part of the spending transaction inputs.} The output will typically only include the address/hash of the script/datum such that the script and datum can be specified. This helps reducing the memory footprints of the EUTxOs (as they only include the hash, and the transaction itself provides all the Script, Redeemer, Datum), which can help with the rapid access of them while validating for transactions, etc.
+
+    \paragraph{}But wouldn't that mean that you need to \emph{know} the datum/script in advance to include it in your transaction in order to spend a certain input? Yes that is right, but sometimes that isn't always possible, or it might be problematic for certain types of applications, and that is why you can optionally include the full datum in the EUTxO that will be consumed. Otherwise, there are other off-chain methods that haven't been explained in week 1, but hopefully those will be uncovered during the following weeks.
+
+    \paragraph{} Obviously, formalising such a concept is not bound to a specific programming language, but the Plutus Pioneer Program, as the name suggests, will focus on the usage of Plutus, and it's mother-language Haskell. 
+
+    \paragraph{} To gain a more formal view about the EUTxO model, I recommend the \href{https://iohk.io/en/research/library/papers/the-extended-utxo-model/}{paper originally presenting the EUTXO model.} It's only 15 pages long, and the vocabulary or expressions not too daunting, so yeah please do have a go at it!
+    
+
+
+
+
+    \subsection{The English Auction}
+    
+    \paragraph{} First off, an English Auction is the type of auction you see a lot in films. There's something valuable that's on auction, and a minimum `bid' on that item, which is the smallest sum of money you can bid on the item to `win' over the item. People shout out their bid, which has to be monotonically ascending for the auctioneer to accept it, and while you have the highest bid on the item (a standing bid), you are the temporary winner of the item. That changes when your bid is displaced by a higher one, and you're no longer the winner. This goes on and on for a given set of time, and the standing bid at the end of the timeframe is the final winner. How do we design such a scheme on the Cardano Blockchain with the EUTxO design above, and how would it work?
+
+    \paragraph{} As described above, we can first parameterize what attributes an `Auction' has to hold. Those would be:
+
+    \begin{itemize}
+        \item The owner (of the item on auction)
+        \item The item itself (an NFT in our example)
+        \item The minimum bid
+        \item The current highest bid
+        \item The deadline
+    \end{itemize}
+
+    On that, we can define the sort of transactions that can happen on it. Namely:
+    \begin{itemize}
+        \item \textbf{Start and Auction} - An auction is created with the attributes above. All of the attributes have to exist in a valid sense(you can't start an auction on an item that is not there, the minimum bid has to be positive, the deadline has to be beyond the current time).
+        \item \textbf{Bid on the Auction} - Someone can bid on a started auction. This transaction will be contrained by the minimum bid attribute, the highest bid attribute, and the deadline(you need to bid higher(than the minimum or the previous highest bid), and bid before the deadline).
+        \item \textbf{Close the Auction} - Once the given deadline is over, the auction has to be closed and the item goes to the winner and the highest bid goes to the owner. This is contrained only by the deadline(you can only close the auction after the deadline).
+    \end{itemize} 
+
+    When developing an application, it is useful to organise a schematic like the above, exploring what data types are required, what sort of transactions are necessary, what constraints they have, and what are the validation conditions, etc.?
+
+    \paragraph{} Anywhoos, let's try delving into the example. 
+
+    \begin{enumerate}
+        \item Alice wants to auction off her NFT(Non-Fungible Token), which is a native token living on the Cardano network, that `exists exactly once' as Lars puts it!
+        \item So first Alice starts the auction by creating a UTxO with the NFT as the value (typically you cannot only have a token as a value for the UTxO, you need ADA too) at the Script address holding the Auction Script. The auction script holds the minimum bid parameter(lets say 100 ADA), and the deadline. The `highest bid' parameter will be carried forward by the Datum, which currently is there is none.
+        \item Bob wants to bid for the NFT, and bids the minimum bid of 100 ADA by creating a transaction with 2 inputs and 1 outputs
+        
+        Here the inputs will be the \textbf{Auction UTxO}, and \textbf{Bob's UTxOs holding Bob's ADA}. The transaction itself will return the \textbf{updated Auction script} with the value being updated to the NFT and the 100ADA bid, and the Datum(holding data about the highest bid) updated to hold the information that ``The highest bid is 100 ADA under Bob's name".
+
+        This transaction's redeemer will hold data for this transactions validation of using the Auction UTxO as input. This data will include information about the bid, and the validator provided by the auction script can check whether or not it can be consumed by the transaction or not using that redeemer. Here it can check certain conditions listed above such as the bid happening before the deadline, the bid being high enough, and that the correct input and output are there for the transaction which is given as context(e.g datum updated correctly? etc.).
+
+        \item At his point Charlie wants to bid higher, and bids 200ADA by creating a transaction again with Charlie's UTxOs containing Charlie's ADA, and the updated Auction UTxO from before.
+        
+        As Charlie's bid is higher than Bob's, it will output the updated Auction UTxO with Charlie's bid + NFT as value, and the Datum changing to information on Charlie's bid. On top of this new auction UTxO, another output is made that returns Bob's 100 ADA bid back.
+        
+        \item Once the deadline is over, the auction is set, and either Alice(who will get the 200 ADA) or Charlie(who will get the NFT) who are incentivised the close the auction will do so, and that closing transaction does the following:
+        
+        Just the auction UTxO goes into the closing transaction and two outputs, one to Alice with the ADA and one to Charlie with the NFT are produced. Again the redeemer and the validator will check if the auction UTxO can be consumed by the closing transaction by checking if the deadline was reached, and that the outputs all make sense.
+
+        As a side note, this closing transaction is necessary. UTxOs are just passive data and unless an outside transaction is presented to the blockchain, the state would not change. \textbf{Change is triggered by a transaction}, so if you'd like for an automatic thing to happen after a while, automate the creation of the transaction on the wallet level, not in the valdiator/ transaction script.
+
+        \item If no bid was present on Alice's Bid, then after the deadline, Alice can close the auction with the closing transaction which will consume the auction UTxO, and produce a UTxO with the NFT as value back to Alice.
+        \end{enumerate}
+
+
+    \subsection{So where do we code all that?}
+
+    \paragraph{} Wow! We've come so far from discussing ledger based applications to EUTXOs, and even an English Auction example! With all that, I'd say we're ready to start looking at code (which we will from week 2! woop woop!).  Plutus has two places where the codes live, namely \textbf{on-chain} and \textbf{off-chain} code.
+
+    \begin{description}
+        \item[On-chain code] - These are the Scripts from the UTxO models. The so called `validators'. Where its hash is given by the UTxO, and the transaction input provides the actual compiled plutus code for it. When a Cardano node receives a transaction, it validates the transaction with this on-chain code before accepting it into its mempool, then eventually into a block. For each input of the transaction, the corresponding script on the script address is executed, and it must suceed. If it doesn't, it is deemed an invalid transaction. The actual `code' is written in Haskell, but compiled down to \textbf{``Plutus Core''}
+         
+        \item[Off-chain code] - This is the code that runs in the wallet (not the blockchain!). These construct suitable transactions that will unlock the output to be consumed as input. This is the main logic that can write various different applications. It has to define the input and outputs of a transaction, and form suitable smart contracts that will be used by your application.    
+    \end{description}
+
+    As you can see, its a \textbf{symbiotic relationship between the two types of code}. The off-chain code actively constructs transactions and the on-chain code provides the validation of UTxO being used as input given the off-chain context.
+
+    What really reinforces this symbiosis is that both on and off chain are written in Haskell (our favorite functional programming language! yay!). This allows for sharing code between the on and off chains, which will really play a part when dealing with state machines (again a concept to come up in future lectures!).
+
+    \section{Closing}
+    \paragraph{} That roughly closes the notes and thoughts for week 1 of the Plutus Pioneer Program(second cohort). I haven't really talked about the setup of the Plutus Playground (use \textbf{nix} btw, its awesome!) or simulating the English Auction with it, nor the on/off chain code that goes into it, but hopefully this still serves as a good conceptual introduction to the course. I hope to start an engaging conversation on this topic, and like what our favorite distributed ledger tries to do, reach consensus among our understanding and usage of the Plutus Platform. Always remember, we're changing the world slowly but surely!! Share the love! \heartsuit
+
+
+    \paragraph{}ESSE QUAM VIDERI\\
+    J Kang.
+
+
+\end{document}
+
