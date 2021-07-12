@@ -41,7 +41,9 @@
 
         \paragraph{}Up until this point, we've only discussed what a ledger is, but let's dig deeper and see what the Cardano Blockchain[our favourite ledger ;)] is all about. 
 
-        \paragraph{}The Cardano Blockchain is a digital \textbf{distributed} ledger. Here the word distributed implies \textbf{`replicated, shared, and synchronised'}. This makes reaching consensus a bit harder than a central organisation (like the church on the historical example above) managing the entire ledger. Still, if such consensus can be achieved, \textbf{trustlessness} comes to town, and this can provide numerous (hopefully) positive socioeconomic effects. The Cardano blockchain manages that consensus with a philosophy called `Proof of Stake', which at its simplest means `temporarily transferring power (to write on the ledger) over to the party that has the most to lose if things go wrong on the ledger', but there are layers and layers into this. Also, numerous other consensus algorithms, so I beg the reader to read more about them! Here's a \href{https://cardano.org/ouroboros/}{link} to the Cardano website describing the Ouroboros protocol.
+        \paragraph{}The Cardano Blockchain is a digital \textbf{distributed} ledger. Here the word distributed implies \textbf{`replicated, shared, and synchronised'}. This makes reaching consensus a bit harder than a central organisation (like the church on the historical example above) managing the entire ledger. Still, if such consensus can be achieved, \textbf{trustlessness} comes to town, and this can provide numerous (hopefully) positive socioeconomic effects. Its like people having a bible on their own in the church example. You don't have to trust that the church hasn't tampered with the single source of truth, and can independently act upon your own copy. As such it is also possible to quickly confirm someone else's claim with your own knowledge. You also don't need to provide personal information to the church in order to access it, etc.
+        
+        \paragraph{}The Cardano blockchain manages that consensus with a philosophy called `Proof of Stake', which at its simplest means `temporarily transferring power (to write on the ledger) over to the party that has the most to lose if things go wrong on the ledger', but there are layers and layers into this. Also, numerous other consensus algorithms, so I beg the reader to read more about them! Here's a \href{https://cardano.org/ouroboros/}{link} to the Cardano website describing the Ouroboros protocol.
 
         \paragraph{}By now, I hope that we're all on the same page (Ha! consensus!) and that we're all filled with exciting ideas that apply `distributed ledgers' to crucial human problems, needs, and want! 
         
@@ -171,7 +173,7 @@
 
         As a side note, this closing transaction is necessary. UTxOs are just passive data, and unless an outside transaction is presented to the blockchain, the state will not change. \textbf{Change is triggered by a transaction}, so if you'd like for an automatic thing to happen after a while, automate the creation of the transaction on the wallet level, not in the validator/ transaction script.
 
-        \item If no bid was present on Alice's Bid, then after the deadline, Alice can close the auction with the closing transaction, which will consume the auction UTxO, and produce a UTxO with the NFT as value back to Alice.
+        \item If no bid was present on Alice's Auction, then after the deadline, Alice can close the auction with the closing transaction, which will consume the auction UTxO, and produce a UTxO with the NFT as value back to Alice.
         \end{enumerate}
 
 
