@@ -94,13 +94,15 @@
 
     \subsection{(E)UTxOs}
 
-    \paragraph{} To borrow the expression, EUTxOs are UTxOs on steroids, and by steroids, I mean `smart contracts'. Typically, the validation of the consumption of an UTxO relies on its digital signature checking. To elaborate, the UTxO being used as input is attached with a function called a `validator' with the spender's public key address. The transaction input proves its eligibility with the `redeemer', which holds a hash made with the authorised spender's private key.  But with EUTxOs, on top of that digital signature, we can \textbf{add arbitrary logic} (compiled as Plutus core). Instead of the validator and the redeemer holding addresses of public keys and hash, it contains addresses to \textbf{`Scripts'} that contain arbitrary logic. It will be this  `script' that accesses the Redeemer of the transaction input and validate the associated UTxO as a valid input or not. 
+    \paragraph{} To borrow the expression, EUTxOs are UTxOs on steroids, and by steroids, I mean `smart contracts'. Typically, the validation of the consumption of an UTxO relies on its digital signature checking. To elaborate, the UTxO being used as input is attached with a function called a `validator' with the spender's public key address. The transaction input proves its eligibility with the `redeemer', which holds a hash made with the authorised spender's private key. The validator receives the redeemer information, checks if the key and hash information matches, and thus confirms whether the specified UTxO can be spent at that transaction input or not.
+    
+    But with EUTxOs, on top of that digital signature, we can \textbf{add arbitrary logic} (compiled as Plutus core). Instead of the validator and the redeemer holding addresses of public keys and hash, it contains addresses to \textbf{`Scripts'} that contain arbitrary logic. It will be this  `script' that accesses the Redeemer(+ Datum which will be explained later) of the transaction input and the transaction context to validate the associated UTxO as a valid input or not. 
 
     \subsection{Context of the Scripts}
     We all know the Goldilocks story, and the same analogy can be shown in the context of the scripts in three major blockchains currently in use. Let's see whether our favourite blockchain Cardano is too hot, too cold, or just right!
 
     \begin{itemize}
-        \item \textbf{Bitcoin} The Bitcoin blockchain also has (not-so) smart contracts written in Bitcoin Scripts. These scripts only have access to the Redeemer of the input, and thus the script on the UTxO has minimal context.
+        \item \textbf{Bitcoin} The Bitcoin blockchain also has (not-so) smart contracts written in Bitcoin Scripts. These scripts only have access to the Redeemer of the input. Within the scale of the current transaction and up to the full blockchain state, Bitcoin's UTxO scripts have minimal context (of just the redeemer of the associated transaction input). Straightforward and clean, but its going to be hard to express anything exciting.
          
         \item \textbf{Ethereum} The scripts on the Ethereum blockchain sees the whole shared state of the blockchain. This allows it to be very expressive, as it can incorporate various states and conditions of the blockchain. Yet, non-determinism(side-effects) and concurrency is an issue (which might lead to security problems).
         

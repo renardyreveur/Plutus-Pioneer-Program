@@ -15,7 +15,7 @@ Every idea, every thought, no matter how trivial or complex, deserves respect, a
 
 - The plan is to **update the notes every weekend after the lectures**, but it will depend on my personal schedule!
 
-- Notes will be uploaded in pdf formats in two versions: **one in English🇬🇧, and the other in Korean🇰🇷**. I'm not sure whether my English is better or my Korean, so if you do find mistakes, typos, or errors in expression in any of the languages, please add an issue about it!
+- Notes will be uploaded in pdf formats in two versions: **one in English🇬🇧, and the other in Korean🇰🇷**. I'm not sure whether my English is better or my Korean(I do write in English first, then translate to Korean so..), so if you do find mistakes, typos, or errors in expression in any of the languages, please add an issue about it!
 
 - The .tex files that I wrote up to render the pdfs will also be uploaded, and anyone can make it into their own!
 
